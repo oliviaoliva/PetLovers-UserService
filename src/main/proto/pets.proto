@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package pets;
+
+message Empty {}
+
+message Pet {
+  string id = 1;
+  string name = 2;
+  string breed = 3;
+}
+
+message PetsList {
+  repeated Pet pets = 1;
+}
+
+service PetService {
+  rpc ListPets (Empty) returns (PetsList);
+}
