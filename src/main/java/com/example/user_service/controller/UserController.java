@@ -14,8 +14,10 @@ import pets.PetServiceGrpc;
 import pets.Pets;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.Collections;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -60,19 +62,20 @@ public class UserController {
     /** Método de Cadastro de Usuário **/
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
-
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("E-mail já está em uso!");
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        // Salvar usuário no banco
-        userRepository.save(user);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("Usuário registrado com sucesso!");
+public ResponseEntity<Map<String, String>> register(@RequestBody User user) {
+    if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap("message", "E-mail já está em uso!"));
     }
+
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    userRepository.save(user);
+
+    // Retorna um JSON no formato {"message": "Usuário registrado com sucesso!"}
+    return ResponseEntity.status(HttpStatus.CREATED)
+            .body(Collections.singletonMap("message", "Usuário registrado com sucesso!"));
+}
+
 
     /** Comunicação com Pet Service **/
 
