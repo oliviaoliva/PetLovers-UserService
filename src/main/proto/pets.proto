@@ -2,18 +2,30 @@ syntax = "proto3";
 
 package pets;
 
-message Empty {}
-
 message Pet {
-  string id = 1;
-  string name = 2;
-  string breed = 3;
+    string id = 1; // O MongoDB gera um ObjectId, então usamos string
+    string name = 2;
+    string breed = 3;
 }
 
 message PetsList {
-  repeated Pet pets = 1;
+    repeated Pet pets = 1;
+}
+
+message AddPetRequest {
+    string name = 1;
+    string breed = 2;
+}
+
+message AddPetResponse {
+    string id = 1;
+    string name = 2;
+    string breed = 3;
 }
 
 service PetService {
-  rpc ListPets (Empty) returns (PetsList);
+    rpc ListPets (Empty) returns (PetsList);
+    rpc AddPet (AddPetRequest) returns (AddPetResponse);
 }
+
+message Empty {}

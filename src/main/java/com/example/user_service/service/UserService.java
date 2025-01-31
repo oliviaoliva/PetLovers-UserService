@@ -12,6 +12,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public Optional<User> getUserByUsername(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
