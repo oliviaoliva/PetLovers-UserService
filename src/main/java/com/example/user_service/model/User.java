@@ -1,5 +1,8 @@
 package com.example.user_service.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,8 +11,8 @@ import lombok.Data;
 @Data
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID) 
+    private String id;
 
     @Column(nullable = false)
     private String username;
@@ -28,4 +31,10 @@ public class User {
 
     @Column(nullable = false)
     private String phone;
+
+    @ElementCollection
+    @CollectionTable(name = "user_pet_ids", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "pet_id")
+    private List<String> petIds = new ArrayList<>();
+
 }

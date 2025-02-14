@@ -3,9 +3,15 @@ syntax = "proto3";
 package pets;
 
 message Pet {
-    string id = 1; // O MongoDB gera um ObjectId, então usamos string
+    string id = 1;
     string name = 2;
-    string breed = 3;
+    string photo = 3;
+    string type = 4;
+    string breed = 5;
+    string size = 6;
+    string sex = 7;
+    bool neutered = 8;
+    string ownerId = 9;
 }
 
 message PetsList {
@@ -14,18 +20,51 @@ message PetsList {
 
 message AddPetRequest {
     string name = 1;
-    string breed = 2;
+    string photo = 2;
+    string type = 3;
+    string breed = 4;
+    string size = 5;
+    string sex = 6;
+    bool neutered = 7;
+    string ownerId = 8; 
 }
 
 message AddPetResponse {
     string id = 1;
     string name = 2;
-    string breed = 3;
+    string photo = 3;
+    string type = 4;
+    string breed = 5;
+    string size = 6;
+    string sex = 7;
+    bool neutered = 8;
+}
+
+message UpdatePetRequest {
+    string id = 1;
+    string name = 2;
+    string photo = 3;
+    string type = 4;
+    string breed = 5;
+    string size = 6;
+    string sex = 7;
+    bool neutered = 8;
+}
+
+message DeletePetRequest {
+    string id = 1;
+}
+
+message PetIdRequest {
+    string petId = 1;
 }
 
 service PetService {
     rpc ListPets (Empty) returns (PetsList);
     rpc AddPet (AddPetRequest) returns (AddPetResponse);
+    rpc UpdatePet (UpdatePetRequest) returns (Pet);
+    rpc DeletePet (DeletePetRequest) returns (Empty);
+    rpc GetPetById (PetIdRequest) returns (Pet);
 }
 
 message Empty {}
