@@ -9,8 +9,8 @@ message Pet {
     string type = 4;
     string breed = 5;
     string size = 6;
-    string sex = 7;
-    bool neutered = 8;
+    string sex = 7;    
+    bool neutered = 8;  
     string ownerId = 9;
 }
 

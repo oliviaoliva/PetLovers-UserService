@@ -4,6 +4,7 @@ import com.example.user_service.model.User;
 import com.example.user_service.repository.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabbitmq.client.Channel;
 
 import jakarta.transaction.Transactional;
 
@@ -22,8 +23,8 @@ public class PetCreatedListener {
     }
 
     @Transactional
-    @RabbitListener(queues = "pet_created")
-    public void onPetCreated(String message) {
+    @RabbitListener(queues = "pet_created", ackMode = "MANUAL")
+    public void onPetCreated(String message, Channel channel) {
         try {
             JsonNode jsonNode = objectMapper.readTree(message);
             String petId = jsonNode.get("petId").asText();
@@ -39,6 +40,8 @@ public class PetCreatedListener {
             } else {
                 System.out.println("⚠ Usuário " + userId + " não encontrado!");
             }
+
+            channel.basicAck(1, false); 
 
         } catch (Exception e) {
             System.err.println("❌ Erro ao processar mensagem: " + e.getMessage());

@@ -37,4 +37,7 @@ public class User {
     @Column(name = "pet_id")
     private List<String> petIds = new ArrayList<>();
 
+    @ElementCollection
+    private List<String> favoritePets = new ArrayList<>();
+
 }
