@@ -9,6 +9,8 @@ import com.rabbitmq.client.Channel;
 import jakarta.transaction.Transactional;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.support.AmqpHeaders;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -24,7 +26,7 @@ public class PetCreatedListener {
 
     @Transactional
     @RabbitListener(queues = "pet_created", ackMode = "MANUAL")
-    public void onPetCreated(String message, Channel channel) {
+    public void onPetCreated(String message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) {
         try {
             JsonNode jsonNode = objectMapper.readTree(message);
             String petId = jsonNode.get("petId").asText();
@@ -41,7 +43,7 @@ public class PetCreatedListener {
                 System.out.println("⚠ Usuário " + userId + " não encontrado!");
             }
 
-            channel.basicAck(1, false); 
+            channel.basicAck(tag, false); 
 
         } catch (Exception e) {
             System.err.println("❌ Erro ao processar mensagem: " + e.getMessage());
