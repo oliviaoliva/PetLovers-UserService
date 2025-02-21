@@ -76,7 +76,6 @@ public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
 
     if (existingUser.isPresent()) {
         if (passwordEncoder.matches(user.getPassword(), existingUser.get().getPassword())) {
-            // Criar um objeto apenas com os dados necessários (sem senha)
             Map<String, Object> userData = new HashMap<>();
             userData.put("id", existingUser.get().getId());
             userData.put("name", existingUser.get().getName());
